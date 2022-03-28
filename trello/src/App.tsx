@@ -1,28 +1,45 @@
 import React, {useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from "./components/Todolist";
+import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "completed" | "active";
 function App() {
 
-    let initTasks: Array<TaskType> = [
-        { id: 1, title: "CSS", isDone: true},
-        { id: 2, title: "HTML", isDone:  true},
-        { id: 3, title: "JS", isDone:  false},
-        { id: 4, title: "Redux", isDone: false},
-        { id: 5, title: "React", isDone: true}
-    ]
+    let [tasks, setTasks] = useState([
+        { id: v1(), title: "CSS", isDone: true},
+        { id: v1(), title: "HTML", isDone:  true},
+        { id: v1(), title: "JS", isDone:  false},
+        { id: v1(), title: "Redux", isDone: false},
+        { id: v1(), title: "React", isDone: true}
+    ]);
 
-    let [tasks, setTasks] = useState(initTasks);
+    function addTask(title: string) {
+        let newTask = {
+            id: v1(),
+            title: title,
+            isDone: false
+        };
+        let newTasks = [newTask, ...tasks];
+        setTasks(newTasks);
+    }
     let [filter, setFilter] = useState("all");
 
     function changeFilter(value: FilterValuesType) {
         setFilter(value);
     }
 
-    function removeTask(id: number) {
+    function removeTask(id: string) {
         let filteredTasks = tasks.filter(t => t.id !== id)
         setTasks(filteredTasks);
+    }
+
+    function changeStatus(taskId: string, isDone: boolean) {
+        let task = tasks.find( t =>  t.id === taskId );
+        if(task) {
+            task.isDone = isDone;
+        }
+        setTasks([...tasks]);
     }
 
     let tasksForTodolist = tasks;
@@ -47,6 +64,9 @@ function App() {
                 tasks={tasksForTodolist}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                addTask={addTask}
+                changeTaskStatus={changeStatus}
+                filter={filter}
       />
       {/*<Todolist title={"Movies"} tasks={tasks2}/>*/}
     </div>

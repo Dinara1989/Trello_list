@@ -1,5 +1,21 @@
 .App {
-  text-align: left;
-  padding: 20px;
+  display: flex;
+  padding: 30px;
+}
+.App > div {
+  margin-right: 50px;
 }
 
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+.active-filter {
+  background-color: aquamarine;
+}
+.is-done {
+  opacity: 0.5;
+}
